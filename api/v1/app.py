@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -11,6 +11,10 @@ app.register_blueprint(app_views)
 @app.teardown_appcontext
 def close(c):
     storage.close()
+
+@app.errorhandler(404)
+def not_found(e):
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 if __name__ == "__main__":
@@ -24,3 +28,4 @@ if __name__ == "__main__":
     else:
         port = getenv('HBNB_API_PORT')
         app.run(host=host, port=port, threaded=True, debug=True)
+
