@@ -54,8 +54,10 @@ class DBStorage:
     def get(self, cls, id):
         """ Returns an object base on the class and id """
         class_obj = self.all(cls)
+        print(class_obj)
         filter_obj = list(filter(lambda x: x.id == id, class_obj.values()))
-        if filter_obj[0] is None:
+        print(filter_obj)
+        if filter_obj is None:#or filter_obj[0] is None:
             return None
         return filter_obj[0]
 
@@ -76,6 +78,7 @@ class DBStorage:
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
+            print("Enter DB_storage ---> obj: {}, id: {}".format(obj.__class__.__name__, obj.id))
             self.__session.delete(obj)
 
     def reload(self):
