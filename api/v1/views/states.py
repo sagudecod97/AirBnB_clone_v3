@@ -58,7 +58,7 @@ def create_state():
     new_state = State(**req)
     storage.new(new_state)
     storage.save()
-    return make_response(jsonify(new_state.to_dict()), 200)
+    return make_response(jsonify(new_state.to_dict()), 201)
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
@@ -74,10 +74,13 @@ def update_state(state_id):
     if state is None:
         return make_response(jsonify({"error": "Not found"}), 404)
 
-    copy_state = copy.deepcopy(state)
-    copy_state.name = req["name"]
-    storage.delete(state)
+    for key,value in req.items():
+        if key not in ["id", "created_at", "updated_at"]:
+            setattr(state, key, value)
     storage.save()
-    storage.new(copy_state)
-    storage.save()
-    return make_response(jsonify({"ahah": 69}), 666)
+    return make_response(jsonify(state.to_dict()), 200)
+
+
+
+
+

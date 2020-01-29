@@ -76,8 +76,6 @@ class DBStorage:
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
-            print("Enter DB_storage ---> obj: {}, id: {}"
-                  .format(obj.__class__.__name__, obj.id))
             self.__session.delete(obj)
 
     def reload(self):
