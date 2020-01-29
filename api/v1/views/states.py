@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" State """
 from api.v1.views import app_views
 from flask import jsonify, make_response, request
 from models import storage
@@ -8,6 +9,7 @@ import copy
 
 @app_views.route('/states/', methods=['GET'])
 def get_states():
+    """ Retrieves the list of all state """
     states = storage.all("State")
     arr_states = []
     for value in states.values():
@@ -17,6 +19,7 @@ def get_states():
 
 @app_views.route('/states/<state_id>', methods=['GET'])
 def get_state(state_id):
+    """Retrieves a state object """
     states = storage.all("State")
     for key, value in states.items():
         state = key.split(".")
@@ -27,6 +30,7 @@ def get_state(state_id):
 
 @app_views.route('/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id):
+    """ Deletes a state object """
     states = storage.all("State")
     for key, value in states.items():
         state = key.split(".")
@@ -39,6 +43,7 @@ def delete_state(state_id):
 
 @app_views.route('/states/', methods=['POST'])
 def create_state():
+    """ Creates a state object """
     if request.is_json:
         req = request.get_json()
     else:
@@ -57,6 +62,7 @@ def create_state():
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
 def update_state(state_id):
+    """Updates a state object """
     state = storage.get("State", state_id)
     print("STATE: {}".format(state))
     if request.is_json:
