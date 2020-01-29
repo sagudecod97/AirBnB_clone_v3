@@ -25,7 +25,7 @@ def get_state(state_id):
         state = key.split(".")
         if state[1] == state_id:
             return jsonify(value.to_dict())
-    return make_response(jsonify({"error": "Not found"}), 404)
+    return abort(404)
 
 
 @app_views.route('/states/<state_id>', methods=['DELETE'])
@@ -38,7 +38,7 @@ def delete_state(state_id):
             storage.delete(value)
             storage.save()
             return make_response(jsonify({}), 200)
-    return make_response(jsonify({"error": "Not found"}), 404)
+    return abort(404)
 
 
 @app_views.route('/states/', methods=['POST'])
@@ -69,18 +69,13 @@ def update_state(state_id):
     if request.is_json:
         req = request.get_json()
     else:
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
+        abort(400, "Missing name")
 
     if state is None:
-        return make_response(jsonify({"error": "Not found"}), 404)
+        abort(404)
 
-    for key,value in req.items():
+    for key, value in req.items():
         if key not in ["id", "created_at", "updated_at"]:
             setattr(state, key, value)
     storage.save()
     return make_response(jsonify(state.to_dict()), 200)
-
-
-
-
-
