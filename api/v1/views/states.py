@@ -5,6 +5,7 @@ from models import storage
 from models.state import State
 import copy
 
+
 @app_views.route('/states/', methods=['GET'])
 def get_states():
     states = storage.all("State")
@@ -21,7 +22,7 @@ def get_state(state_id):
         state = key.split(".")
         if state[1] == state_id:
             return jsonify(value.to_dict())
-    return make_response(jsonify({"error":"Not found"}), 404)
+    return make_response(jsonify({"error": "Not found"}), 404)
 
 
 @app_views.route('/states/<state_id>', methods=['DELETE'])
@@ -33,7 +34,7 @@ def delete_state(state_id):
             storage.delete(value)
             storage.save()
             return make_response(jsonify({}), 200)
-    return make_response(jsonify({"error":"Not found"}), 404)
+    return make_response(jsonify({"error": "Not found"}), 404)
 
 
 @app_views.route('/states/', methods=['POST'])
@@ -41,12 +42,12 @@ def create_state():
     if request.is_json:
         req = request.get_json()
     else:
-        return make_response(jsonify({"error":"Not a JSON"}), 400)
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     try:
         req["name"]
     except Exception as e:
-        return make_response(jsonify({"error":"Missing name"}), 400)
+        return make_response(jsonify({"error": "Missing name"}), 400)
 
     new_state = State(**req)
     storage.new(new_state)
@@ -61,10 +62,10 @@ def update_state(state_id):
     if request.is_json:
         req = request.get_json()
     else:
-        return make_response(jsonify({"error":"Not a JSON"}), 400)
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     if state is None:
-        return make_response(jsonify({"error":"Not found"}), 404)
+        return make_response(jsonify({"error": "Not found"}), 404)
 
     copy_state = copy.deepcopy(state)
     copy_state.name = req["name"]
