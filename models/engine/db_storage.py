@@ -54,10 +54,9 @@ class DBStorage:
     def get(self, cls, id):
         """ Returns an object base on the class and id """
         class_obj = self.all(cls)
-        print(class_obj)
         filter_obj = list(filter(lambda x: x.id == id, class_obj.values()))
         print(filter_obj)
-        if filter_obj is None:#or filter_obj[0] is None:
+        if filter_obj is None or len(filter_obj) == 0:#or filter_obj[0] is None:
             return None
         return filter_obj[0]
 
