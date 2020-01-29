@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ State """
 from api.v1.views import app_views
-from flask import jsonify, make_response, request
+from flask import jsonify, make_response, request, abort
 from models import storage
 from models.state import State
 import copy
@@ -46,13 +46,14 @@ def create_state():
     """ Creates a state object """
     if request.is_json:
         req = request.get_json()
+        print("json")
     else:
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
+        abort(400, "Not a JSON")
 
     try:
         req["name"]
     except Exception as e:
-        return make_response(jsonify({"error": "Missing name"}), 400)
+        abort(400, "Missing name")
 
     new_state = State(**req)
     storage.new(new_state)
