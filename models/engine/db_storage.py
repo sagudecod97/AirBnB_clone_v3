@@ -55,7 +55,6 @@ class DBStorage:
         """ Returns an object base on the class and id """
         class_obj = self.all(cls)
         filter_obj = list(filter(lambda x: x.id == id, class_obj.values()))
-        print(filter_obj)
         if filter_obj is None or len(filter_obj) == 0:
             return None
         return filter_obj[0]
