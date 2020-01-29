@@ -13,6 +13,7 @@ def get_status():
 
 @app_views.route('/stats', methods=['GET'])
 def get_stats():
+    """ Returns the quantity of each key """
     return jsonify({
         "amenities": storage.count("Amenity"),
         "cities": storage.count("City"),
