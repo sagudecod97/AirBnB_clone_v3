@@ -33,8 +33,9 @@ class FileStorage:
     def get(self, cls, id):
         """ Returns an object base on the class and id """
         class_obj = self.all(cls)
+        print("****************************\n {} \n ********************".format(class_obj))
         filter_obj = list(filter(lambda x: x.id == id, class_obj.values()))
-        if filter_obj[0] is None:
+        if len(filter_obj) == 0 or filter_obj[0] is None:
             return None
         return filter_obj[0]
 
