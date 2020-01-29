@@ -56,7 +56,7 @@ class DBStorage:
         class_obj = self.all(cls)
         filter_obj = list(filter(lambda x: x.id == id, class_obj.values()))
         print(filter_obj)
-        if filter_obj is None or len(filter_obj) == 0:#or filter_obj[0] is None:
+        if filter_obj is None or len(filter_obj) == 0:
             return None
         return filter_obj[0]
 
@@ -77,7 +77,8 @@ class DBStorage:
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
-            print("Enter DB_storage ---> obj: {}, id: {}".format(obj.__class__.__name__, obj.id))
+            print("Enter DB_storage ---> obj: {}, id: {}"
+                  .format(obj.__class__.__name__, obj.id))
             self.__session.delete(obj)
 
     def reload(self):
