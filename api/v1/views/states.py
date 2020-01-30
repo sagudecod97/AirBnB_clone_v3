@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#rr!/usr/bin/python3
 """ State """
 from api.v1.views import app_views
 from flask import jsonify, make_response, request, abort
@@ -47,7 +47,6 @@ def create_state():
     """ Creates a state object """
     if request.is_json:
         req = request.get_json()
-        print("json")
     else:
         abort(400, "Not a JSON")
 
@@ -66,7 +65,6 @@ def create_state():
 def update_state(state_id):
     """Updates a state object """
     state = storage.get("State", state_id)
-    print("STATE: {}".format(state))
     if request.is_json:
         req = request.get_json()
     else:
