@@ -69,7 +69,7 @@ def update_state(state_id):
     if request.is_json:
         req = request.get_json()
     else:
-        abort(400, "Missing name")
+        abort(400, "Not a JSON")
 
     if state is None:
         abort(404)
