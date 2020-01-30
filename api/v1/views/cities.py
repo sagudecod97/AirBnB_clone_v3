@@ -6,20 +6,31 @@ from models import storage
 from models.city import City
 
 
-@app_views.route('/cities/', methods=['GET'], strict_slashes=False)
-def get_cities():
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
+def get_cities(state_id):
     """Retrieves the list of all cities """
     cities = storage.all("City")
     arr_cities = []
     for value in cities.values():
-        arr_cities.append(value.to_dict())
-    return jsonify(arr_states)
+        if value.state_id == state_id:
+            arr_cities.append(value.to_dict())
+
+    if len(arr_cities) == 0:
+        abort(404)
+    return jsonify(arr_cities)
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'],
+@app_views.route('/cities/<city_id>', methods=['GET'],
                  strict_slashes=False)
-def get_city(state_id):
+def get_city(city_id):
     """ Retrieves the list of all city objects """
+    cities = storage.all("City")
+    for key, value in cities.items():
+        city = key.split(".")
+        if city[1] == city_id:
+            return jsonify(value.to_dict())
+    return abort(404)
 
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'],
@@ -36,6 +47,27 @@ def delete_cities(city_id):
     return abort(404)
 
 
+@app_views.route('/states/<state_id>/cities', methods=['POST'],
+                 strict_slashes=False)
+def create_city(state_id):
+    """ Creates a City """
+    if request.is_json:
+        req = request.get_json()
+    else:
+        abort(400, "Not a JSON")
+
+    try:
+        req["name"]
+    except Exception as e:
+        abort(400, "Missing name")
+
+    req["state_id"] = state_id
+    new_city = City(**req)
+    storage.new(new_city)
+    storage.save()
+    return make_response(jsonify(new_city.to_dict()), 201)
+
+
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def update_city(state_id):
     """Updates a city object """
@@ -49,7 +81,7 @@ def update_city(state_id):
         abort(404)
 
     for key, value in req.items():
-        if key not in ["id", "created_at", "updated_at"]:
+        if key not in ["id", "created_at", "updated_at", "state_id"]:
             setattr(cities, key, value)
-            storage.save()
-            return make_response(jsonify(cities.to_dict()), 200)
+    storage.save()
+    return make_response(jsonify(cities.to_dict()), 200)
