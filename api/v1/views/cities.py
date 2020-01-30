@@ -22,8 +22,6 @@ def get_state(state_id):
     """ Retrieves the list of all city objects """
 
 
-
-
 @app_views.route('/cities/<city_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_cities(city_id):
@@ -31,27 +29,27 @@ def delete_cities(city_id):
     cities = storage.all("City")
     for key, value in cities.items():
         city = key.split(".")
-         if city[1] == city_id:
+        if city[1] == city_id:
             storage.delete(value)
-             storage.save()
-             return make_response(jsonify({}), 200)
+            storage.save()
+            return make_response(jsonify({}), 200)
     return abort(404)
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     """Updates a city object """
-        cities = storage.get("City", city_id)
-        if request.is_json:
-            req = request.get_json()
-        else:
-             abort(400, "Not a JSON")
+    cities = storage.get("City", city_id)
+    if request.is_json:
+        req = request.get_json()
+    else:
+        abort(400, "Not a JSON")
 
-        if cities is None:
-            abort(404)
+    if cities is None:
+        abort(404)
 
-         for key, value in req.items():
-             if key not in ["id", "created_at", "updated_at"]:
-                 setattr(cities, key, value)
-             storage.save()
-             return make_response(jsonify(cities.to_dict()), 200)
+    for key, value in req.items():
+        if key not in ["id", "created_at", "updated_at"]:
+            setattr(cities, key, value)
+            storage.save()
+            return make_response(jsonify(cities.to_dict()), 200)
