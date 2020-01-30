@@ -3,11 +3,11 @@
 from api.v1.views import app_views
 from flask import jsonify, make_response, request, abort
 from models import storage
-from models.city import State City
+from models.city import City
 
 
 @app_views.route('/cities/', methods=['GET'], strict_slashes=False)
-def get_states():
+def get_cities():
     """Retrieves the list of all cities """
     cities = storage.all("City")
     arr_cities = []
@@ -18,7 +18,7 @@ def get_states():
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'],
                  strict_slashes=False)
-def get_state(state_id):
+def get_city(state_id):
     """ Retrieves the list of all city objects """
 
 
@@ -37,7 +37,7 @@ def delete_cities(city_id):
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
-def update_state(state_id):
+def update_city(state_id):
     """Updates a city object """
     cities = storage.get("City", city_id)
     if request.is_json:
