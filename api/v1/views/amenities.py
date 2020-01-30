@@ -4,20 +4,21 @@ from api.v1.views import app_views
 from flask import jsonify, make_response, request, abort
 from models import storage
 from models.state import State
+from models.amenity import Amenity
 import copy
 
 
 @app_views.route('/amenities/', methods=['GET'], strict_slashes=False)
-def get_amenities(self):
+def get_amenities():
     """ Retrieves the list of all amenities """
     amenities = storage.all("Amenity")
     arr_amenities = []
-    for value in amenities.value():
+    for value in amenities.values():
         arr_amenities.append(value.to_dict())
     return jsonify(arr_amenities)
 
 
-@app_views.route('/api/v1/amenities/<amenity_id>', methods=['GET'],
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
 def get_amenity(amenity_id):
     """ Retrieves an amenity object """
@@ -25,6 +26,7 @@ def get_amenity(amenity_id):
     for key, value in amenities.items():
         amenity = key.split(".")
         if amenity[1] == amenity_id:
+            print(value.to_dict())
             return jsonify(value.to_dict())
     return abort(404)
 
