@@ -88,6 +88,10 @@ def update_city(city_id):
 
     if cities is None:
         abort(404)
+    try:
+        req["name"]
+    except Exception as e:
+        abort(400, "Missing name")
 
     for key, value in req.items():
         if key not in ["id", "created_at", "updated_at", "state_id"]:
