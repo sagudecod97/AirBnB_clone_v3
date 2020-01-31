@@ -22,7 +22,6 @@ def get_users():
 def get_user(user_id):
     """Retrieves an user object """
     users = storage.all("User")
-    arr_users = []
     for key, value in users.items():
         user = key.split(".")
         if user[1] == user_id:
