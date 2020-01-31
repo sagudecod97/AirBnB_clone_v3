@@ -19,7 +19,7 @@ def get_users():
 
 @app_views.route('/users/<user_id>', methods=['GET'],
                  strict_slashes=False)
-def get_users(user_id):
+def get_user(user_id):
     """Retrieves an user object """
     users = storage.all("User")
     arr_users = []
