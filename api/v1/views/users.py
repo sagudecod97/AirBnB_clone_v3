@@ -14,6 +14,8 @@ def get_users():
     arr_users = []
     for value in users.values():
         arr_users.append(value.to_dict())
+    if len(arr_users) == 0:
+        return jsonify([])
     return jsonify(arr_users)
 
 
@@ -27,6 +29,7 @@ def get_user(user_id):
         if user[1] == user_id:
             print(value.to_dict())
             return jsonify(value.to_dict())
+    print("This one happened")
     return abort(404)
 
 
