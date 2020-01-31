@@ -7,7 +7,7 @@ from models.user import User
 import copy
 
 
-@app_views.route('/users/', methods=['GET'], strict_slashes=False)
+@app_views.route('/users', methods=['GET'], strict_slashes=False)
 def get_users():
     """Retrieves the list of all users """
     users = storage.all("User")
