@@ -7,7 +7,7 @@ import os
 from flask_cors import CORS
 
 
-ipp = Flask(__name__)
+app = Flask(__name__)
 app.register_blueprint(app_views)
 
 
