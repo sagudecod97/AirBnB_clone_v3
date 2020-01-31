@@ -51,6 +51,7 @@ def delete_cities(city_id):
                  strict_slashes=False)
 def create_city(state_id):
     """ Creates a City """
+    flag = 0
     if request.is_json:
         req = request.get_json()
     else:
@@ -61,7 +62,15 @@ def create_city(state_id):
     except Exception as e:
         abort(400, "Missing name")
 
-    req["state_id"] = state_id
+    states = storage.all("State")
+    for value in states.values():
+        if value.id == state_id:
+            flag = 1
+
+    if flag:
+        req["state_id"] = state_id
+    else:
+        abort(404)
     new_city = City(**req)
     storage.new(new_city)
     storage.save()
@@ -69,7 +78,7 @@ def create_city(state_id):
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
-def update_city(state_id):
+def update_city(city_id):
     """Updates a city object """
     cities = storage.get("City", city_id)
     if request.is_json:
